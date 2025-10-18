@@ -49,4 +49,11 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     // Find communities by creator
     List<Community> findByCreatedBy_Id(Long userId);
+
+    // FIXED: Removed extra closing parenthesis
+    @Query("SELECT c FROM Community c WHERE " +
+            "(LOWER(c.name) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(c.description) LIKE LOWER(CONCAT('%', :query, '%'))) " +
+            "ORDER BY c.name ASC")
+    Page<Community> searchCommunities(@Param("query") String query, Pageable pageable);
 }

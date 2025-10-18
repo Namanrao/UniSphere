@@ -205,6 +205,15 @@ public class CommunityService {
                 .collect(Collectors.toList());
     }
 
+    // Add to src/main/java/com/unisphere/service/CommunityService.java
+    public boolean isUserMemberOfCommunityUniversity(Long userId, Long communityId) {
+        Community community = communityRepository.findById(communityId)
+                .orElseThrow(() -> new RuntimeException("Community not found"));
+
+        return userUniversityRepository.existsByUserIdAndUniversityIdAndVerificationStatus(
+                userId, community.getUniversity().getId(), VerificationStatus.VERIFIED);
+    }
+
     // Update member role (admin only)
     public CommunityDTO.MemberResponse updateMemberRole(Long communityId, CommunityDTO.RoleUpdateRequest request, User currentUser) {
         Community community = communityRepository.findById(communityId)
@@ -277,7 +286,7 @@ public class CommunityService {
     }
 
     // Convert Community to DTO
-    private CommunityDTO.Response convertToDTO(Community community, User currentUser) {
+    public CommunityDTO.Response convertToDTO(Community community, User currentUser) {
         CommunityDTO.Response dto = new CommunityDTO.Response();
         dto.setId(community.getId());
         dto.setName(community.getName());
@@ -312,4 +321,5 @@ public class CommunityService {
         dto.setJoinedAt(member.getJoinedAt());
         return dto;
     }
+
 }

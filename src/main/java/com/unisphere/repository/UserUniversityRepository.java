@@ -33,6 +33,9 @@ public interface UserUniversityRepository extends JpaRepository<UserUniversity, 
     // Check if user is associated with any university
     boolean existsByUser(User user);
 
+    // Add to src/main/java/com/unisphere/repository/UserUniversityRepository.java
+    boolean existsByUserIdAndUniversityIdAndVerificationStatus(Long userId, Long universityId, VerificationStatus verificationStatus);
+
     // Count verified users for a university
     long countByUniversityAndVerificationStatus(University university, VerificationStatus status);
 
