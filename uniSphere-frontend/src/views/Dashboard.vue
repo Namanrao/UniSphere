@@ -17,21 +17,21 @@
           <div class="stat-card">
             <div class="stat-icon">📚</div>
             <div class="stat-info">
-              <div class="stat-number">12</div>
+              <div class="stat-number">{{ userStats.courseCount || 0 }}</div>
               <div class="stat-label">Active Courses</div>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-icon">💬</div>
             <div class="stat-info">
-              <div class="stat-number">24</div>
+              <div class="stat-number">{{ userStats.postCount || 0 }}</div>
               <div class="stat-label">Discussions</div>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-icon">👥</div>
             <div class="stat-info">
-              <div class="stat-number">5</div>
+              <div class="stat-number">{{ userStats.communityCount || 0 }}</div>
               <div class="stat-label">Communities</div>
             </div>
           </div>
@@ -92,7 +92,7 @@
         />
 
         <!-- Empty State -->
-        <div v-if="posts.length === 0" class="empty-state">
+        <div v-if="posts.length === 0 && !isLoading" class="empty-state">
           <div class="empty-illustration">
             <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
               <path
@@ -142,11 +142,21 @@
             </button>
           </div>
         </div>
+
+        <!-- Loading State -->
+        <div v-if="isLoading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Loading discussions...</p>
+        </div>
       </div>
 
       <!-- Load More -->
-      <div v-if="posts.length > 0" class="load-more-section">
-        <button class="load-more-btn">
+      <div v-if="posts.length > 0 && hasMorePosts" class="load-more-section">
+        <button
+          @click="loadMorePosts"
+          class="load-more-btn"
+          :disabled="isLoading"
+        >
           <span>Load More Discussions</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path
@@ -166,73 +176,28 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useCommunityStore } from "@/stores/communities";
 import PostCard from "@/components/post/PostCard.vue";
 
 const authStore = useAuthStore();
+const communitiesStore = useCommunityStore();
 const currentSort = ref("new");
-const posts = ref([]);
 const showCreatePost = ref(false);
+const isLoading = ref(false);
+const hasMorePosts = ref(true);
+
+// Temporary fallback data until we have the posts store
+const posts = ref([]);
+const userStats = ref({
+  courseCount: 0,
+  postCount: 0,
+  communityCount: 0,
+});
 
 const sortOptions = [
   { value: "new", label: "Latest" },
   { value: "hot", label: "Trending" },
   { value: "top", label: "Popular" },
-];
-
-// Mock data - replace with actual API calls
-const mockPosts = [
-  {
-    id: 1,
-    title: "Welcome to UniSphere!",
-    content:
-      "This is the first post in our university community. Feel free to introduce yourself and share what you're studying!",
-    author: "admin",
-    community: "welcome",
-    votes: 15,
-    commentCount: 8,
-    createdAt: "2024-01-15T10:30:00Z",
-    userVote: 0,
-    tags: ["welcome", "introduction"],
-  },
-  {
-    id: 2,
-    title: "Study Group for CS101 Midterms - Anyone Interested?",
-    content:
-      "Looking for serious students to form a study group for the upcoming midterms. We can share resources and practice together!",
-    author: "cs_student",
-    community: "cs101",
-    votes: 23,
-    commentCount: 12,
-    createdAt: "2024-01-15T09:15:00Z",
-    userVote: 1,
-    tags: ["study-group", "cs101", "midterms"],
-  },
-  {
-    id: 3,
-    title: "Best Quiet Study Spots on Campus? Library is Always Packed!",
-    content:
-      "What are your favorite hidden gems for studying? The main library is always so crowded during exam season...",
-    author: "studious_guy",
-    community: "campuslife",
-    votes: 8,
-    commentCount: 15,
-    createdAt: "2024-01-14T16:45:00Z",
-    userVote: -1,
-    tags: ["study-spots", "campus", "tips"],
-  },
-  {
-    id: 4,
-    title: "Calculus II Help - Integration Techniques",
-    content:
-      "Struggling with some integration problems. Anyone have good resources or tips for mastering these techniques?",
-    author: "math_learner",
-    community: "mathematics",
-    votes: 12,
-    commentCount: 6,
-    createdAt: "2024-01-14T14:20:00Z",
-    userVote: 0,
-    tags: ["calculus", "help", "mathematics"],
-  },
 ];
 
 const filteredPosts = computed(() => {
@@ -254,18 +219,67 @@ const filteredPosts = computed(() => {
   }
 });
 
+// Fetch real data
+const fetchDashboardData = async () => {
+  isLoading.value = true;
+  try {
+    // Fetch user's communities for stats
+    await communitiesStore.fetchUserCommunities();
+
+    // Update stats with real data
+    userStats.value = {
+      courseCount: communitiesStore.userCommunities?.length || 0,
+      postCount: posts.value.length || 0,
+      communityCount: communitiesStore.userCommunities?.length || 0,
+    };
+
+    console.log("Dashboard data loaded:", {
+      posts: posts.value,
+      stats: userStats.value,
+      userCommunities: communitiesStore.userCommunities,
+    });
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    // Fallback to empty data
+    posts.value = [];
+    userStats.value = {
+      courseCount: 0,
+      postCount: 0,
+      communityCount: 0,
+    };
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const loadMorePosts = async () => {
+  isLoading.value = true;
+  try {
+    // TODO: Implement pagination when backend supports it
+    console.log("Load more posts functionality to be implemented");
+    hasMorePosts.value = false;
+  } catch (error) {
+    console.error("Error loading more posts:", error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 onMounted(() => {
-  // Fetch posts from API
-  posts.value = mockPosts;
+  fetchDashboardData();
 });
 
-const handleVote = (postId, voteType) => {
-  // Handle vote logic
-  console.log(`Vote ${voteType} on post ${postId}`);
+const handleVote = async (postId, voteType) => {
+  try {
+    // TODO: Implement voting when posts store is available
+    console.log(`Vote ${voteType} on post ${postId}`);
+  } catch (error) {
+    console.error("Error voting on post:", error);
+  }
 };
 
 const handleComment = (postId) => {
-  // Handle comment logic
+  // Handle comment logic - will be implemented with comment system
   console.log(`Comment on post ${postId}`);
 };
 </script>
@@ -609,6 +623,32 @@ const handleComment = (postId) => {
   box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
 }
 
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #6b7280;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #f97316;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* Load More Section */
 .load-more-section {
   text-align: center;
@@ -631,10 +671,15 @@ const handleComment = (postId) => {
   transition: all 0.3s ease;
 }
 
-.load-more-btn:hover {
+.load-more-btn:hover:not(:disabled) {
   background: #fff7ed;
   border-color: #f97316;
   transform: translateY(-2px);
+}
+
+.load-more-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Responsive Design */
