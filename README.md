@@ -2,12 +2,10 @@
 
 UniSphere is a Reddit-like platform designed exclusively for university students to collaborate, share resources, and discuss academic topics within a verified, safe environment.
 
-🚀 Features
-✅ Implemented Features
-🔐 Secure Authentication - JWT-based login/register with university email validation
+## 🚀 Features
 
-🏫 University System - Automatic university detection via email domains
-
+### 🔐 Secure Authentication - JWT-based login/register with university email validation
+### 🏫 University System - Automatic university detection via email domains
 📚 Course Communities - Create/join course-specific communities (CS101, Math, etc.)
 
 📝 Post System - Create, view, and interact with academic discussions
