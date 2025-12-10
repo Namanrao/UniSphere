@@ -1,4 +1,4 @@
-🎓 UniSphere - University Social Learning Platform
+#🎓 UniSphere - University Social Learning Platform
 
 UniSphere is a Reddit-like platform designed exclusively for university students to collaborate, share resources, and discuss academic topics within a verified, safe environment.
 
