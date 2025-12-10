@@ -1,51 +1,82 @@
-# 🎓UniSphere - University Social Learning Platform
+# UniSphere - University Social Learning Platform
 
-UniSphere is a Reddit-like platform designed exclusively for university students to collaborate, share resources, and discuss academic topics within a verified, safe environment.
+UniSphere is a Reddit-like academic collaboration platform for university students.  
+It allows verified students to join course communities, share resources, and discuss academic topics within a secure environment.
 
-## 🚀 Features
+---
 
-🔐 Secure Authentication - JWT-based login/register with university email validation
-🏫 University System - Automatic university detection via email domains
-📚 Course Communities - Create/join course-specific communities (CS101, Math, etc.)
-📝 Post System - Create, view, and interact with academic discussions
-🎨 Modern UI - Sexy orange theme with gradients & glass morphism effects
-📱 Responsive Design - Mobile-friendly interface with sidebar navigation
-👤 User Profiles - Complete profile system with university verification
-🔄 Real-time Updates - Dynamic content loading and state management
+## Features
 
-##🔄 In Progress
-⭐ Post voting system (upvote/downvote)
-💬 Nested comment system
-🔍 Advanced search functionality
-📁 File upload for posts
+### Authentication
+- JWT-based login & registration  
+- University email verification  
+- Secure user session management  
 
-## 🛠️ Tech Stack
+### University & Course System
+- Automatic university detection via email domain  
+- Join and participate in course-specific communities (e.g., CS101, MATH110)
+
+### Post & Discussion System
+- Create academic posts  
+- View discussions  
+- Interact with peers on academic topics  
+
+### User Interface
+- Modern UI with gradient and glass-morphism design  
+- Responsive layout optimized for mobile and desktop  
+- Sidebar navigation system  
+
+### User Profiles
+- Verified university profile  
+- User activity and contributions  
+
+### Real-Time Experience
+- Dynamic content loading  
+- Smooth frontend state management
+
+---
+
+## In Progress
+- Post voting system (upvote/downvote)  
+- Nested comments  
+- Advanced search  
+- File upload support for posts  
+
+---
+
+## Tech Stack
 
 ### Frontend
-Framework: Vue 3 + Composition API
-Build Tool: Vite
-State Management: Pinia
-Routing: Vue Router
-HTTP Client: Axios
-Styling: Custom CSS with glass morphism
+- Vue 3 (Composition API)
+- Vite
+- Pinia (State Management)
+- Vue Router
+- Axios
+- Custom CSS (glass-morphism UI)
 
 ### Backend
-Framework: Spring Boot 3.x
-Security: Spring Security + JWT
-Database: MySQL 8.x
-ORM: Spring Data JPA
-Validation: Jakarta Validation
+- Spring Boot 3.x
+- Spring Security + JWT
+- MySQL 8.x
+- Spring Data JPA
+- Jakarta Validation
 
 ### Development Tools
-Version Control: Git + GitHub
-API Testing: Postman/Insomnia
-Database GUI: MySQL Workbench
-IDE: VS Code / IntelliJ IDEA
+- Git & GitHub
+- Postman / Insomnia
+- MySQL Workbench
+- VS Code / IntelliJ IDEA
 
-# 🚀 Getting Started
-Prerequisites
-Node.js 18+ & npm
-Java 17+
-MySQL 8+
-Git
+---
 
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Java 17+
+- MySQL 8+
+- Git
+
+*(Add setup instructions once the project folder structure is finalized.)*
+
+---
